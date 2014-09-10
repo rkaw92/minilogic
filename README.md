@@ -2,6 +2,8 @@
 
 `minilogic` is a package of tiny utility functions for dealing with logic problems in code.
 
+It can be installed for use in your project with `npm install --save minilogic`.
+
 # Features
 
 ## switch
