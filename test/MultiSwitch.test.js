@@ -45,5 +45,22 @@ describe('TableSwitch', function(){
 				ml.switch().default(function(){ return 'default'; }).default(function(){ return 'default'; });
 			}, ml.errors.MultiSwitchError);
 		});
+		it('should allow using an external equality predicate for case matching', function(){
+			var mySwitch = ml.switch.customize({
+				isEqual: function isEqual(a, b){ return a === b; }
+			}).switch().case('ok', function caseOK(){
+				return true;
+			}).case('error', function caseError(){
+				return false;
+			});
+			assert.strictEqual(mySwitch.evaluate('ok'), true);
+		});
+		it('should accept alternate syntax for switched value passing', function(){
+			assert.equal(ml.switch({ a: 1 }).case({ a: null }, function(){
+				return 'not ok';
+			}).case({ a: 1 }, function(){
+				return 'ok';
+			}).evaluate(), 'ok');
+		});
 	});
 });
