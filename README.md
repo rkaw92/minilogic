@@ -53,6 +53,35 @@ function getUserRank(canRead, canWrite){
 
 There we have it - a table-based `switch` statement.
 
+### Alternate `switch` syntax
+
+The switch() instruction can also be used by passing the value to switch on into the call immediately, as demonstrated below:
+
+```js
+// This:
+ml.switch().case(caseA).case(caseB).case(caseC).default(caseDefault).evaluate(switchedValue);
+// Is equivalent to this:
+ml.switch(switchedValue).case(caseA).case(caseB).case(caseC).default(caseDefault).evaluate();
+// However, watch out - passing a (different) value to switch() and to evaluate() will yield undefined behaviour:
+ml.switch(switchedValueA).case(caseA).case(caseB).case(caseC).default(caseDefault).evaluate(switchedValueB); // -> ???
+```
+
+### Custom case selection
+
+By default, the "case" calls only accept flat object maps - that is, a single-level, non-null Object whose keys are strings and values are primitive types, comparable by `===`.
+
+Cases are matched by comparing each key within the passed object ("switched value") with the case's match value. If all keys' values match, the case is selected and evaluation stops.
+
+This behaviour can be overridden by using the customize function provided by the exported switch facility:
+
+```js
+var MLSwitch = ml.switch.customize({
+	isEqual: function isEqual(caseValue, switchedValue){ return caseValue === switchedValue }
+});
+// Now we can switch simple types (only), similar to JS's native switch(){} construct:
+MLSwitch.switch(numericValue).case(1, function(){ return 'one'; }).case(2, function(){ return 'two'; }).default(function(){ return 'uh-oh'; });
+```
+
 # License
 The MIT License (MIT)
 

@@ -1,7 +1,7 @@
 var ml = require('../index');
 var assert = require('assert');
 
-describe('TableSwitch', function(){
+describe('MultiSwitch', function(){
 	describe('#switch', function(){
 		it('should produce no value when given no cases at all', function(){
 			assert.equal(typeof(ml.switch().evaluate()), 'undefined');
